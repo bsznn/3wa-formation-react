@@ -3,9 +3,10 @@ import React from "react";
 export default function InputRange(props) {
   return (
     <div>
-      <h3 className="text-sm text-start mb-3">
-        {props.name} <span>{props.textEntered2}</span>
-      </h3>
+      <div className="flex justify-between">
+        <h3 className="mb-3">{props.name}</h3>
+        <p>{props.textEntered2}</p>
+      </div>
       <input
         type="range"
         min={props.minValue}
@@ -13,7 +14,7 @@ export default function InputRange(props) {
         onChange={props.inputEntered2}
         value={props.textEntered2}
         increment={props.increment}
-        className="border-2"
+        className="border-2 w-full"
       />
     </div>
   );
