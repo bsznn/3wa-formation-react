@@ -122,7 +122,7 @@ function App() {
               name="uppercase"
               onChange={() => handleCheckboxChange("uppercase")}
             />
-            <label htmlFor="uppercase">Include Uppercase Letters</label>
+            <label for="uppercase">Include Uppercase Letters</label>
           </div>
           <div className="block mb-2">
             <input
@@ -131,7 +131,7 @@ function App() {
               name="lowercase"
               onChange={() => handleCheckboxChange("lowercase")}
             />
-            <label htmlFor="lowercase">Include Lowercase Letters</label>
+            <label for="lowercase">Include Lowercase Letters</label>
           </div>
           <div className="block mb-2">
             <input
@@ -140,7 +140,7 @@ function App() {
               name="numbers"
               onChange={() => handleCheckboxChange("numbers")}
             />
-            <label htmlFor="numbers">Include Numbers</label>
+            <label for="numbers">Include Numbers</label>
           </div>
           <div className="block mb-2">
             <input
@@ -149,12 +149,12 @@ function App() {
               name="symbols"
               onChange={() => handleCheckboxChange("symbols")}
             />
-            <label htmlFor="symbols">Include Symbols</label>
+            <label for="symbols">Include Symbols</label>
           </div>
         </div>
 
         <div className="border-2 text-center bg-blue-800 text-white p-1 rounded mt-5">
-          <button onClick={generatePassword}>GENERATE</button>
+          <button onClick={generatePassword}>GENERATE →</button>
         </div>
       </div>
     </main>
