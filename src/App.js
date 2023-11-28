@@ -1,50 +1,41 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useReducer } from "react";
 import TaskItem from "./components/TaskItem";
-import logo from "./assets/images/logo.png";
+
+/* Create reducer qui prend en paramétre de fonction
+`state` = c'est un objet qui représente les états locaux
+`action` = c'est un objet qui contient 
+`type` permettant de définir les différentes action possible
+*/
+const reducer = function (state, action) {
+  switch (action.type) {
+    case "onChange":
+      /*
+      Quand on modifie le `state` il faut le copier en utilisant le `spread operator`
+      Pour éviter de supprimer des états locaux (state) de notre reducer
+      */
+      return { ...state, textEntered: action.payload };
+
+    case "addTask":
+      return { tasks: [...state.tasks, state.textEntered], textEntered: "" };
+
+    default:
+      break;
+  }
+};
 
 function App() {
-  // 1 er sera la valeur de votre state
-  // 2e sera la fonction qui permet de mettre à jour le state
-  // TOUJOURS LE DÉCLARER AU TOP DE LA FONCTION 💥
-  const [textEntered, setTextEntered] = useState("");
-  const [tasks, setTasks] = useState([]);
-  /* 
-Le useEffect il permet d'excuter le code au montage du composant
-*/
-  useEffect(() => {
-    // Le localStorage retourne un string donc il faut utiliser `JSON.parse ` pour le convertir en tableau ou objet
-    const tasksList = JSON.parse(localStorage.getItem("my-tasks"));
-    if (tasksList) {
-      setTasks(tasksList);
-    }
-  }, []);
-  console.log(tasks);
+  const initialValue = { tasks: [], textEntered: "", isOpen: false };
+  const [state, dispatch] = useReducer(reducer, initialValue);
 
-  const onChangeHandler = function (event) {
-    // event.target => document.querySelector('input)
-    // `event.target.value` permet de récuperer la valeur d'un input
-    // 👆 Il fonctionne qu'avec les balises formulaires (input, select)
-    // event.target.classList.add('red') // ajoute la class `red` quand on entre une saissie
-    setTextEntered(event.target.value);
-  };
+  console.log(state);
+
+  const onChangeHandler = (e) =>
+    dispatch({ type: "onChange", payload: e.target.value });
 
   const addTaskHandler = function (event) {
-    // A ajouter pour TOUT formulaire utilisant une balise `form`
-    // Elle permet de ne pas recharger la page au submit
     event.preventDefault();
-    // NE PAS UTILISER AINSI QUAND ON VEUT METTRE A JOUR UNE LISTE
-    // tasks.push(textEntered);
-
-    // La bonne méthode : utiliser le `spread operator` qui permet de copier
-    // une liste (tableau) puis ajouter le nouvelle tâche
-    const newArr = [...tasks, textEntered];
-    setTasks(newArr);
-
-    setTextEntered("");
-    // Stock les taches dans le localstorage
-    localStorage.setItem("my-tasks", JSON.stringify(newArr));
+    dispatch({ type: "addTask" });
   };
-  console.log(tasks);
 
   return (
     <main className="bg-slate-900 min-h-screen pt-5 px-10">
@@ -64,9 +55,10 @@ Le useEffect il permet d'excuter le code au montage du composant
           // Avec le paramétre `event` on peut accéder à l'élément `input`
           // Donc à sa valeur `event.target.value`
           onChange={onChangeHandler}
-          value={textEntered}
+          value={state.textEntered}
           type="text"
           className="w-full md:w-2/3"
+          // ref={inputRef}
         />
         <input
           type="submit"
@@ -83,13 +75,6 @@ Le useEffect il permet d'excuter le code au montage du composant
           chaque élément du tableau via les paramétres
           Donc dans notre exemple `item` représente chaque élément de la liste `tasks`
           */}
-          {tasks.map((item, index) => (
-            /* 
-            La propriété `key` est utilisée pour identifier
-            chaque élément enfant générer par la méthode `map`
-            */
-            <TaskItem key={index} name={item} />
-          ))}
         </ul>
       </section>
     </main>
