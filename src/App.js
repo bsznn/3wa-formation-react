@@ -42,6 +42,12 @@ const reducer = function (state, action) {
     case "removeTask":
       const arr = [...state.tasks];
 
+      /* 
+      `taskCurrent` évalue si `state.taskFilter` existe (utilisateur a fait une recherche)
+      si c'est le cas il prendra la valeur de ce dernier sinon le prend la valeur
+      de notre tableau d'origine (`state.task`)
+      */
+      const tasksCurrent = state.taskFilter || arr;
       /*
       🚨🚨 ATTENTION 🚨🚨
       Quand on stock le resulat de la `splice` on récupére l'element supprimer
@@ -57,10 +63,20 @@ const reducer = function (state, action) {
       animals.splice(2, 1);
       // ["dog", "cat"]
       */
-      arr.splice(action.payload, 1);
+
+      const newFilterTask = tasksCurrent.filter(
+        (item) => item !== action.payload
+      );
+
+      arr.splice(arr.indexOf(action.payload), 1);
       // Stock les taches dans le localstorage
       localStorage.setItem("my-tasks", JSON.stringify(arr));
-      return { ...state, tasks: arr };
+
+      return {
+        ...state,
+        tasks: arr,
+        taskFilter: state.taskFilter ? newFilterTask : null,
+      };
 
     case "searchTask":
       const taskSearch = state.tasks.filter((item) =>
@@ -162,9 +178,7 @@ useffect sera exécute au montage du composant
             <TaskItem
               key={index}
               name={item}
-              removeItem={() =>
-                dispatch({ type: "removeTask", payload: index })
-              }
+              removeItem={() => dispatch({ type: "removeTask", payload: item })}
             />
           ))}
         </ul>
