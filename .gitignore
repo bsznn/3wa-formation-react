@@ -1,6 +1,12 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
+/exo-calculatrice
+/my-project
+/character
+/todo-app
+/bonus
+/bonus_2
 /node_modules
 /.pnp
 .pnp.js
