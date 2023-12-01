@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function ItemTopics(props) {
   return (
@@ -8,7 +9,9 @@ export default function ItemTopics(props) {
         alt={`logo's ${props.title}`}
         className="bg-white rounded-md"
       />
-      <span className="font-bold text-1xl">{props.title}</span>
+      <span className="font-bold text-xl">
+        <Link to={`/${props.title}`}>{props.title}</Link>
+      </span>
     </li>
   );
 }
